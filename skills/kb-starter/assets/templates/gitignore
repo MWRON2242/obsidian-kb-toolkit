@@ -1,0 +1,18 @@
+# 派生层与临时文件（可重建，不必进版本库）
+cache/
+fulltext/
+external/
+materials/
+vocab/
+_*.md
+
+# Obsidian 的本地状态
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+.trash/
+
+# 依赖与临时
+node_modules/
+.deps-cache/
+*.tmp

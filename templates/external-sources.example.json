@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "note": "把主 Obsidian 库里的专题笔记「单向镜像」到知识库的 external/ 层，这样两个知识网能出现在同一张图谱里。源（主库）是权威，镜像是只读副本。",
+  "policy": {
+    "direction": "主库 → 知识库（单向）",
+    "onConflict": "如果镜像侧被本地改过（与上次同步的源哈希不一致），脚本会报冲突并跳过，绝不覆盖，除非显式加 --force",
+    "orphan": "源里已删除的文件默认只报告不删除，加 --prune 才清理",
+    "readonly": "镜像目录禁止编辑；要改内容请改主库，然后重跑本脚本"
+  },
+  "sources": [
+    {
+      "name": "代码渲染PV",
+      "src": "<主库路径>\\代码渲染PV",
+      "dest": "external/代码渲染PV",
+      "include": [".md"],
+      "extractText": false
+    },
+    {
+      "name": "Minecraft NeoForge Text Mod",
+      "src": "<主库路径>\\Minecraft NeoForge Text Mod",
+      "dest": "external/Minecraft NeoForge Text Mod",
+      "include": [".md"],
+      "extractText": false
+    }
+  ]
+}

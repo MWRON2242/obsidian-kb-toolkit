@@ -1,0 +1,10 @@
+{
+  "name": "kb-tools",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "个人知识库的本地脚本：登记、检索、文本抽取。仅本地运行，不上传任何内容。",
+  "dependencies": {
+    "unpdf": "^0.12.1"
+  }
+}

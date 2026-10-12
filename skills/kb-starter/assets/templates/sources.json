@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "note": "登记源清单。只登记，不复制、不修改原件。改完运行 node tools/scan.mjs。root 的 path 用绝对路径。",
+  "defaults": {
+    "include": [".pdf", ".docx", ".doc", ".xlsx", ".xls", ".pptx", ".ppt", ".txt", ".md", ".epub"],
+    "ignoreNames": ["~$", "desktop.ini", ".git", "node_modules", ".tmp"],
+    "ignoreDirs": ["node_modules", ".git", "$RECYCLE.BIN", "System Volume Information"],
+    "maxBytes": 20971520
+  },
+  "wordOnly": {
+    "note": "只收 Word 文档时使用的扩展名集合",
+    "include": [".doc", ".docx", ".docm", ".dot", ".dotx", ".dotm", ".rtf"]
+  },
+  "roots": [
+    {
+      "id": "inbox",
+      "path": "__KB__\\inbox",
+      "label": "手工录入（照片笔记 / 粘贴内容 / 上传表格）",
+      "recursive": true,
+      "include": [".md", ".csv"],
+      "extractText": false,
+      "note": "用户手工提供的原始材料。这是**录入原件**，不要改；卡片与词条由脚本从它派生。"
+    },
+    {
+      "id": "chats",
+      "path": "__KB__\\chats",
+      "label": "对话导出",
+      "recursive": true,
+      "include": [".md"],
+      "extractText": false,
+      "note": "由 ds-chat-export.mjs 从官方导出转换而来（会话原文层）。不要手改，重跑导出即可覆盖。"
+    }
+  ]
+}

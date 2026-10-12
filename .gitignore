@@ -1,0 +1,15 @@
+# 依赖与临时文件
+node_modules/
+.deps-cache/
+*.log
+*.tmp
+
+# 编辑器与系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 本仓库是"工具包"，不含任何知识库数据。
+# 如果你把自己的知识库放进来测试，请务必先确认它不含个人信息（手机号、姓名、账目等）。
