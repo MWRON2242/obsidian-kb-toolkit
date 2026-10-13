@@ -5,7 +5,7 @@
 
 > Turn scattered documents (PDF / Word / spreadsheets / AI chat exports / photo notes) into a searchable Obsidian knowledge base — with spaced-repetition review and agent-driven long-term maintenance. 34 plain Node scripts, **no npm dependencies** (Node standard library only).
 
-[English summary](#english-summary) · [设计原则](#三个设计原则) · [快速开始](#快速开始) · [工具清单](#工具清单34-个) · [两个-skill](#两个-agent-skill) · [日常运维](#日常运维) · [已知的坑](#已知的坑)
+[English summary](#english-summary) · [设计原则](#三个设计原则) · [快速开始](#快速开始) · [工具清单](#工具清单41-个) · [五个-skill](#五个-agent-skill) · [日常运维](#日常运维) · [已知的坑](#已知的坑)
 
 ---
 
@@ -115,7 +115,7 @@ obsidian-kb-toolkit/
 > `tools/` 是**唯一权威来源**；`skills/kb-starter/assets/` 是它的副本（因为 skill 要能独立拷到别的机器）。
 > 改完 `tools/` 记得跑一次 `node scripts/sync-assets.mjs`。
 
-## 工具清单（34 个）
+## 工具清单（41 个）
 
 | 分组 | 脚本 | 作用 |
 | --- | --- | --- |
@@ -124,19 +124,42 @@ obsidian-kb-toolkit/
 | Obsidian | `obsidian-sync` `obsidian-check` `fix-id-links` `install-obsidian-plugin` `link-obsidian-vault` | 补别名/导出全文层/刷新首页；健康检查（同名/断链/空笔记）；修「只写 id」的链接；装社区插件；注册库 |
 | 体检 | `check-yaml` `check-math` `check-docx` `render-math-body` | front matter 语法；公式可渲染性；docx 结构；把属性里的公式搬进正文以便渲染 |
 | 派生物 | `extract-materials` `build-material-index` `extract-vocab` `make-review-cards` | 素材库、词库、复习卡（**只增不改**，保护复习进度） |
+| **一键流水线** | `update-cards` | 单词数据一更新就全流程出卡：`extract-vocab` → `make-review-cards` → `export-anki` → 推进 Anki，末尾出**对账表**（`--dry` 预览 / `--no-anki` 跳过） |
+| **Anki 首背卡** | `export-anki` `lib-anki-templates` `install-anki-connect` `anki-api` | 导出含「认词 / 四选一 / 拼写」三张卡的 TSV；给本机 Anki 装 AnkiConnect（含自写 manifest）；经本地 API 建卡组/卡片类型/批量加卡并自动纠正卡组归属 |
+| **分享包** | `make-share-zip` | 打成脱敏的只读浏览包：手机号打码、敏感整卡剔除、路径匿名化、剥离复习进度，并自检隐私与断链 |
 | 成品导出 | `lib-docx` `export-csv-docx` | **零依赖生成 .docx**（自拼 OOXML + 手打 ZIP）；CSV → 排版好的 Word |
 | 对话导出（可选） | `ds-chat-find` `ds-chat-export` `ds-chat-batches` `ds-chat-analyze` `ds-chat-probe` `fetch-share` | 从 DeepSeek 官方导出里按学科检索会话、转成 Markdown、分批、分析 |
 | 主题汇总（示例） | `digest-math` `digest-english` `digest-essay` | 按标题关键词把卡片分组成学科总表（关键词表按自己学科改） |
 | 其它 | `add-source-links` `find-docs` `report-found` `sync-external` | 给对话卡加原文链接；全盘 Word 普查；镜像另一个 Obsidian 库 |
 
-## 两个 agent skill
+## 五个 agent skill
 
 | skill | 什么时候用 | 它给你什么 |
 | --- | --- | --- |
-| **`kb-starter`** | 新机器 / 新目录，**从零建库** | `bootstrap`（建骨架）+ `verify-fresh`（8 项验收）+ 模板 + 34 个工具 + 踩坑全清单 + 平台适配说明 |
+| **`kb-starter`** | 新机器 / 新目录，**从零建库** | `bootstrap`（建骨架）+ `verify-fresh`（8 项验收）+ 模板 + 41 个工具 + 踩坑全清单 + 平台适配说明 |
 | **`kb-longterm-ops`** | 库已在跑，**日常维护** | 一分钟速查表（做了什么→跑哪几条）、四类新内容接入路径、质量闸门、故障排查表、备份回滚、反模式清单 |
+| **`kb-vocab-cards`** | **单词数据一更新** | 一条命令跑完「重建词条 → 复习卡（按来源分牌组、只增不改）→ Anki 首背卡 → 推进 Anki」，并输出对账表；含幂等验证与复习进度保护 |
+| **`kb-homework-grading`** | 用户发来**作业 / 试卷 / 讲义照片** | 照片留档 → 逐字转录为录入原件 → 逐题批改（判定只用 ✓/✗/待确认，读不清绝不猜）→ 带学科标签与日期的卡片 → 登记与体检 |
+| **`kb-sync-teaching`** | 作业批改后要**讲题、追问、纠错** | **先落库再讲解**：把完整推导与知识点写进 `digests/`、更新摘要卡与索引，然后才在聊天里逐步讲解 —— 聊天记录不再是唯一副本 |
 
-两个 skill 都做了**渐进披露**：`SKILL.md` 只留「何时用 + 铁律 + 速查表」（约 1.2k tokens），细节放 `references/` 按需加载。
+五个 skill 都做了**渐进披露**：`SKILL.md` 只留「何时用 + 铁律 + 速查表」（约 1.2k tokens），细节放 `references/` 按需加载。
+
+### 关于 `kb-sync-teaching`（为什么值得单独说）
+
+它解决的是一个很容易被忽略、但代价很大的问题：**讲解只发生在聊天里**。
+
+一次讲题的完整推导常有十几步、牵连多个知识点。如果它只存在于对话里：换个会话就找不到、追问时要从头复述、知识库里有卡片却没有推导、学生问「第 3 步为什么能这样变形」时 agent 只能重推一遍（还可能推出不一样的结果）。
+
+`kb-sync-teaching` 把顺序**倒过来**：先把完整步骤、所用规则、合法性条件、易错点写进对应的 `digests/` 详解文件，更新相关摘要卡与索引，**然后才**在聊天里逐步讲解。它同时定了六条纪律：
+
+1. **区分角色**：题干原文 / 学生作答 / AI 推导 / 核验结论，四者不能混。
+2. **不猜**：缺失条件或字迹不清，明写「待确认」。
+3. **详解归 `digests/`，卡片保持短**：长推导不塞进摘要卡。
+4. **补充教学不改判**：没有新作答证据，讲解不改变原批改判定；追问只细讲卡住的那一步。
+5. **范围纪律**：「同步知识库」指本项目相关层，**不解释为扫描全盘或同步云端 / Anki**。
+6. **不谎报**：退出码 0 ≠ 质检通过；同步失败要准确说明哪些层没完成。
+
+> **它来自实践**：这个 skill 是在真实使用中由**另一个 agent**（Codex，负责读图批改）写出并贡献回来的。两个 agent 共用同一个知识库、按同一套规则做事时，「谁负责哪一层」就成了必须写下来的约定 —— 本工具包的参考实现里对应库内的 `工作台.md`（分工表 + 状态行 + 交接话术）。
 
 ## 日常运维
 
@@ -156,11 +179,13 @@ obsidian-kb-toolkit/
 
 ## 实测数据
 
-这套工具是从一个**真实知识库里长出来的**（529 条登记 / 188 张摘要卡 / 137 个对话原文）：
+这套工具是从一个**真实知识库里长出来的**（534 条登记 / 193 张摘要卡 / 137 个对话原文）：
 
-- 体检：**669 个 Markdown、1536 条 wikilink、0 断链 0 同名**；front matter YAML 0 问题；公式定界符 0 问题
+- 体检：**745 个 Markdown、1955 条 wikilink、0 断链 0 同名**；front matter YAML 0 问题；公式定界符 0 问题
 - 一份 85 行的「词语/例句/释义」CSV → **排好版的 Word**（自研零依赖 docx 生成器，含表头跨页重复、斑马纹、一词多义速览）
-- 150 个英语词条 → **150 张双向复习卡**（英↔中），并实测：**在有真实复习进度的情况下重跑生成器，进度注释完好幸存、新词正常补卡**
+- 208 个英语词条 → **208 张双向复习卡**（分 5 个牌组），并实测：**在有真实复习进度的情况下重跑生成器，进度注释完好幸存、新词正常补卡**
+- 同源导出 **Anki 首背卡：105 条笔记 = 315 张卡**（认词/四选一/拼写各 105），经 AnkiConnect 全自动建组入卡
+- 一份含手机号与账目的真实库 → **脱敏分享包**：384 个文件改写、3 张敏感整卡剔除、路径匿名化，隐私自检 0 残留、885 条链接全部可解析
 - 4 个学科的材料（语文/数学/英语/文言文）在同一套流水线上，各自出总表
 
 ## 已知的坑
