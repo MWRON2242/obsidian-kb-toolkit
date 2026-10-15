@@ -1,9 +1,13 @@
+<p align="center">
+  <img src="assets/icon-400.png" alt="obsidian-kb-toolkit" width="150">
+</p>
+
 # obsidian-kb-toolkit
 
 **把散落一地的文档，变成可检索、可复习、可长期维护的 Obsidian 知识库。**
-一套**零依赖**的 Node 工具（34 个脚本）+ 两个 **agent skill**（从零建库 / 长线运维）。
+一套**零依赖**的 Node 工具（41 个脚本）+ 五个 **agent skill**（从零建库 / 长线运维 / 单词卡片 / 作业批改 / 讲题落库）。
 
-> Turn scattered documents (PDF / Word / spreadsheets / AI chat exports / photo notes) into a searchable Obsidian knowledge base — with spaced-repetition review and agent-driven long-term maintenance. 34 plain Node scripts, **no npm dependencies** (Node standard library only).
+> Turn scattered documents (PDF / Word / spreadsheets / AI chat exports / photo notes) into a searchable Obsidian knowledge base — with spaced-repetition review and agent-driven long-term maintenance. 41 plain Node scripts, **no npm dependencies** (Node standard library only).
 
 [English summary](#english-summary) · [设计原则](#三个设计原则) · [快速开始](#快速开始) · [工具清单](#工具清单41-个) · [五个-skill](#五个-agent-skill) · [日常运维](#日常运维) · [已知的坑](#已知的坑)
 
